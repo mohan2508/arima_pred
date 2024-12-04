@@ -33,7 +33,7 @@ with data:
 with prediction1:
      open,high,low,close=st.tabs(['Open','High','Low','Close'])
 
-    with open:
+     with open:
          df1=hys_data.reset_index()['Open']
          model=ARIMA(df1,order=(2,1,3))
          result=model.fit()
@@ -74,7 +74,7 @@ forecast_values=result.predict(start=len(df1),end=len(df1)+forecast_steps-1,dyna
 with prediction2:
      open,high,low,close=st.tabs(['Open','High','Low','Close'])
 
-    with open:
+     with open:
         df1=hys_data.reset_index()['High']
         model2=sm.tsa.SARIMAX(df1,order=order,seasonal_order=seasonal_order)   
         result=model2.fit() 

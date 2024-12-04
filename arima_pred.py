@@ -31,7 +31,15 @@ with data:
     st.write(hys_data.tail(10))
 
 with prediction1:
-     high,low,close=st.tabs(['High','Low','Close'])
+     open,high,low,close=st.tabs(['Open','High','Low','Close'])
+
+    with open:
+         df1=hys_data.reset_index()['Open']
+         model=ARIMA(df1,order=(2,1,3))
+         result=model.fit()
+         forecast_steps=5
+         forecast_values=result.predict(start=len(df1),end=len(df1)+forecast_steps-1,dynamic=False)
+         st.write(forecast_values)
      
      with high:
          df1=hys_data.reset_index()['High']
@@ -64,7 +72,15 @@ result=model2.fit()
 forecast_steps=5   
 forecast_values=result.predict(start=len(df1),end=len(df1)+forecast_steps-1,dynamic=False)   
 with prediction2:
-     high,low,close=st.tabs(['High','Low','Close'])
+     open,high,low,close=st.tabs(['Open','High','Low','Close'])
+
+    with open:
+        df1=hys_data.reset_index()['High']
+        model2=sm.tsa.SARIMAX(df1,order=order,seasonal_order=seasonal_order)   
+        result=model2.fit() 
+        forecast_steps=5    
+        forecast_values=result.predict(start=len(df1),end=len(df1)+forecast_steps-1,dynamic=False)          
+        st.write(forecast_values)
      
      with high:
         df1=hys_data.reset_index()['High']

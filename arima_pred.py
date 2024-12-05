@@ -27,15 +27,13 @@ st.write(load())
 hys_data=data.history(period='10y')
 hys_data.reset_index(inplace=True)
 
-
-
 def open():
     df1=hys_data.reset_index()['Open']
     model=ARIMA(df1,order=(2,1,3))
     result=model.fit()
     forecast_steps=5
     forecast_values=result.predict(start=len(df1),end=len(df1)+forecast_steps-1,dynamic=False)
-    st.write(forecast_values)
+    return forecast_values
     
 def high():
     df1=hys_data.reset_index()['High']
@@ -43,7 +41,7 @@ def high():
     result=model.fit()
     forecast_steps=5
     forecast_values=result.predict(start=len(df1),end=len(df1)+forecast_steps-1,dynamic=False)
-    st.write(forecast_values) 
+    return forecast_values
    
 def low():
     df1=hys_data.reset_index()['Low']
@@ -51,7 +49,7 @@ def low():
     result=model.fit()
     forecast_steps=5
     forecast_values=result.predict(start=len(df1),end=len(df1)+forecast_steps-1,dynamic=False)
-    st.write(forecast_values) 
+    return forecast_values 
     
 def close():
     df1=hys_data.reset_index()['Close']
@@ -59,9 +57,10 @@ def close():
     result=model.fit()
     forecast_steps=5
     forecast_values=result.predict(start=len(df1),end=len(df1)+forecast_steps-1,dynamic=False)
-    st.write(forecast_values)  
+    return forecast_values  
     
 st.subheader(':orange[Prediction] :red[of the] :green[Stock Selected]')     
+  
 opt=['OPEN','HIGH','LOW','CLOSE']
 selection=st.selectbox(":rainbow[Select your Prediction for]",options=opt)
 
@@ -72,8 +71,15 @@ if selection=='HIGH':
 if selection=='LOW':
     st.write(low())  
 if selection=='CLOSE':
-    st.write(close()) 
+    st.write(close())         
+
+
+
+
+                   
     
+    
+
 
 
  

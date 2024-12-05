@@ -8,55 +8,60 @@ from datetime import date
 from statsmodels.tsa.arima.model import ARIMA
 import statsmodels.api as sm
 
+
+
 st.header('Stock :orange[Web] :red[App]')
 st.image("https://th.bing.com/th/id/OIP.Ttoy04OYis0BLYxlPZvTSwHaEK?w=331&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7")
 st.subheader(':rainbow[Stock Future Prediction]')
 stocks=st.text_input('Enter Stock Ticker','SBIN.NS')
 Start='2015-01-01'
 Today = date.today().strftime("%Y-%m-%d")
-
-button1=st.button("Load Data")
-
-if button1:
-    data=yf.Ticker(stocks)
-    hys_data=data.history(period='10y')
-    hys_data.reset_index(inplace=True)
-    st.write(hys_data.tail())
-    
-st.subheader(':orange[Prrediction] :red[of the] :green[Stock Selected]') 
 data=yf.Ticker(stocks)
-hys_data=data.history(period='10y')  
+hys_data=data.history(period='10y')
+hys_data.reset_index(inplace=True)
+st.write(hys_data.tail())
 
-opt = st.radio(':rainbow[Market Status :]',['Open','High','Low','Close'],horizontal=True) 
-
-if opt=='Open':
+@st.cache_data
+def open():
     df1=hys_data.reset_index()['Open']
     model=ARIMA(df1,order=(2,1,3))
     result=model.fit()
     forecast_steps=5
     forecast_values=result.predict(start=len(df1),end=len(df1)+forecast_steps-1,dynamic=False)
     st.write(forecast_values)
-    
-elif opt=='High':
+@st.cache_data    
+def high():
     df1=hys_data.reset_index()['High']
     model=ARIMA(df1,order=(2,1,3))
     result=model.fit()
     forecast_steps=5
     forecast_values=result.predict(start=len(df1),end=len(df1)+forecast_steps-1,dynamic=False)
     st.write(forecast_values) 
-    
-elif opt=='Low':
+@st.cache_data    
+def low():
     df1=hys_data.reset_index()['Low']
     model=ARIMA(df1,order=(2,1,3))
     result=model.fit()
     forecast_steps=5
     forecast_values=result.predict(start=len(df1),end=len(df1)+forecast_steps-1,dynamic=False)
     st.write(forecast_values) 
-    
-elif opt=='Close':
+@st.cache_data    
+def close():
     df1=hys_data.reset_index()['Close']
     model=ARIMA(df1,order=(2,1,3))
     result=model.fit()
     forecast_steps=5
     forecast_values=result.predict(start=len(df1),end=len(df1)+forecast_steps-1,dynamic=False)
-    st.write(forecast_values)     
+    st.write(forecast_values)  
+    
+st.subheader(':orange[Prediction] :red[of the] :green[Stock Selected]')     
+col1,col2,col3,col4=st.columns(4)   
+
+if col1.button(':orange[OPEN]'):
+    st.write(open())    
+if col2.button(':green[HIGH]'):
+    st.write(high())  
+if col3.button(':red[LOW]'):
+    st.write(low())  
+if col4.button(':rainbow[CLOSE]'):
+    st.write(close())  

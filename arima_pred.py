@@ -8,18 +8,25 @@ from datetime import date
 from statsmodels.tsa.arima.model import ARIMA
 import statsmodels.api as sm
 
-
-
 st.header('Stock :orange[Web] :red[App]')
 st.image("https://th.bing.com/th/id/OIP.Ttoy04OYis0BLYxlPZvTSwHaEK?w=331&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7")
 st.subheader(':rainbow[Stock Future Prediction]')
-stocks=st.text_input('Enter Stock Ticker','SBIN.NS')
+
 Start='2015-01-01'
 Today = date.today().strftime("%Y-%m-%d")
+stocks=st.text_input('Enter Stock Ticker','SBIN.NS')
 data=yf.Ticker(stocks)
+
+
+def load():
+    data=yf.Ticker(stocks)
+    hys_data=data.history(period='10y')
+    hys_data.reset_index(inplace=True)
+    return hys_data.tail()
+st.write(load())    
 hys_data=data.history(period='10y')
 hys_data.reset_index(inplace=True)
-st.write(hys_data.tail())
+
 
 
 def open():
@@ -29,7 +36,7 @@ def open():
     forecast_steps=5
     forecast_values=result.predict(start=len(df1),end=len(df1)+forecast_steps-1,dynamic=False)
     st.write(forecast_values)
-   
+    
 def high():
     df1=hys_data.reset_index()['High']
     model=ARIMA(df1,order=(2,1,3))
@@ -37,7 +44,7 @@ def high():
     forecast_steps=5
     forecast_values=result.predict(start=len(df1),end=len(df1)+forecast_steps-1,dynamic=False)
     st.write(forecast_values) 
-  
+   
 def low():
     df1=hys_data.reset_index()['Low']
     model=ARIMA(df1,order=(2,1,3))
@@ -45,7 +52,7 @@ def low():
     forecast_steps=5
     forecast_values=result.predict(start=len(df1),end=len(df1)+forecast_steps-1,dynamic=False)
     st.write(forecast_values) 
-   
+    
 def close():
     df1=hys_data.reset_index()['Close']
     model=ARIMA(df1,order=(2,1,3))
@@ -64,4 +71,9 @@ if col2.button(':green[HIGH]'):
 if col3.button(':red[LOW]'):
     st.write(low())  
 if col4.button(':rainbow[CLOSE]'):
-    st.write(close())  
+    st.write(close())                      
+    
+    
+
+
+ 

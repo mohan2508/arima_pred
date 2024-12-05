@@ -21,7 +21,7 @@ hys_data=data.history(period='10y')
 hys_data.reset_index(inplace=True)
 st.write(hys_data.tail())
 
-@st.cache_data
+
 def open():
     df1=hys_data.reset_index()['Open']
     model=ARIMA(df1,order=(2,1,3))
@@ -29,7 +29,7 @@ def open():
     forecast_steps=5
     forecast_values=result.predict(start=len(df1),end=len(df1)+forecast_steps-1,dynamic=False)
     st.write(forecast_values)
-@st.cache_data    
+   
 def high():
     df1=hys_data.reset_index()['High']
     model=ARIMA(df1,order=(2,1,3))
@@ -37,7 +37,7 @@ def high():
     forecast_steps=5
     forecast_values=result.predict(start=len(df1),end=len(df1)+forecast_steps-1,dynamic=False)
     st.write(forecast_values) 
-@st.cache_data    
+  
 def low():
     df1=hys_data.reset_index()['Low']
     model=ARIMA(df1,order=(2,1,3))
@@ -45,7 +45,7 @@ def low():
     forecast_steps=5
     forecast_values=result.predict(start=len(df1),end=len(df1)+forecast_steps-1,dynamic=False)
     st.write(forecast_values) 
-@st.cache_data    
+   
 def close():
     df1=hys_data.reset_index()['Close']
     model=ARIMA(df1,order=(2,1,3))

@@ -62,17 +62,17 @@ def close():
     st.write(forecast_values)  
     
 st.subheader(':orange[Prediction] :red[of the] :green[Stock Selected]')     
-col1,col2,col3,col4=st.columns(4)   
+opt=['OPEN','HIGH','LOW','CLOSE']
+selection=st.selectbox(":rainbow[Select your Prediction for]",options=opt)
 
-if col1.button(':orange[OPEN]'):
-    st.write(open())    
-if col2.button(':green[HIGH]'):
-    st.write(high())  
-if col3.button(':red[LOW]'):
+if selection=='OPEN':
+    st.write(open())
+if selection=='HIGH':
+    st.write(high()) 
+if selection=='LOW':
     st.write(low())  
-if col4.button(':rainbow[CLOSE]'):
-    st.write(close())                      
-    
+if selection=='CLOSE':
+    st.write(close()) 
     
 
 
